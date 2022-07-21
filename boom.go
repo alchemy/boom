@@ -223,6 +223,61 @@ func (dao *Dao[T]) GetBy(tx *bolt.Tx, idxName string, idxValue interface{}) ([]*
 	return values, nil
 }
 
+func (dao *Dao[T]) First(tx *bolt.Tx) (*T, error) {
+	b := dao.Bucket(tx)
+	c := b.Cursor()
+	_, v := c.First()
+	if v == nil {
+		return nil, nil
+	}
+	obj, err := dao.Decode(v)
+	if err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+func (dao *Dao[T]) Next(tx *bolt.Tx) (*T, error) {
+	b := dao.Bucket(tx)
+	c := b.Cursor()
+	_, v := c.Next()
+	if v == nil {
+		return nil, nil
+	}
+	obj, err := dao.Decode(v)
+	if err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+func (dao *Dao[T]) Prev(tx *bolt.Tx) (*T, error) {
+	b := dao.Bucket(tx)
+	c := b.Cursor()
+	_, v := c.Prev()
+	if v == nil {
+		return nil, nil
+	}
+	obj, err := dao.Decode(v)
+	if err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+func (dao *Dao[T]) Last(tx *bolt.Tx) (*T, error) {
+	b := dao.Bucket(tx)
+	c := b.Cursor()
+	_, v := c.Last()
+	if v == nil {
+		return nil, nil
+	}
+	obj, err := dao.Decode(v)
+	if err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
 func (dao *Dao[T]) Delete(tx *bolt.Tx, key []byte) error {
 	b := dao.Bucket(tx)
 	if b == nil {
