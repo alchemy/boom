@@ -1,4 +1,4 @@
-module github/alchemy/boom
+module github.com/alchemy/boom
 
 go 1.18
 
